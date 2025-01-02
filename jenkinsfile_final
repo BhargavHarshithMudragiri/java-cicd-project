@@ -10,7 +10,7 @@ pipeline {
       stage('checkout') {
             steps {
                 echo 'Cloning GIT HUB Repo '
-				git branch: 'main', url: 'https://github.com/devopstraininghub/mindcircuit13.git'
+				git branch: 'main', url: 'https://github.com/BhargavHarshithMudragiri/java-cicd-project.git'
             }  
         }
 		
@@ -32,7 +32,7 @@ pipeline {
         stage('Build Artifact') {
             steps {
                 echo 'Build Artifact'
-				sh 'mvn clean package'
+		sh 'mvn clean package'
             }
         }
 		
@@ -41,7 +41,7 @@ pipeline {
         stage('Docker Image') {
             steps {
                 echo 'Docker Image building'
-				sh 'docker build -t devopshubg333/batch13:${BUILD_NUMBER} .'
+		sh 'docker build -t bhargavharshith/javaproject:${BUILD_NUMBER} .'
             }
         }
 		
@@ -51,10 +51,10 @@ pipeline {
 			 script {
 			withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) 
 			{
-            sh 'docker login -u devopshubg333 -p ${dockerhub}'
+            sh 'docker login -u bhargavharshith -p ${dockerhub}'
 			
 			 }
-			   sh 'docker push devopshubg333/batch13:${BUILD_NUMBER}'
+			   sh 'docker push bhargavharshith/javaproject:${BUILD_NUMBER}'
 			   
            
 				}
@@ -66,8 +66,8 @@ pipeline {
     stage('Update Deployment File') {
 		
 		 environment {
-            GIT_REPO_NAME = "mindcircuit13"
-            GIT_USER_NAME = "devopstraininghub"
+            GIT_REPO_NAME = "java-cicd-project"
+            GIT_USER_NAME = "BhargavHarshithMudragiri"
         }
 		
             steps {
@@ -75,13 +75,13 @@ pipeline {
 				withCredentials([string(credentialsId: 'githubtoken', variable: 'githubtoken')]) 
 				{
                   sh '''
-                    git config user.email "gorekarmadhu@gmail.com"
-                    git config user.name "Madhu"
+                    git config user.email "myselfbhargavharshith@gmail.com"
+                    git config user.name "Bhargav"
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s/batch13:.*/batch13:${BUILD_NUMBER}/g" deploymentfiles/deployment.yml
+                    sed -i "s/javaproject:.*/javaproject:${BUILD_NUMBER}/g" deploymentfiles/deployment.yml
                     git add .
                     
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git commit -m "Updated deployment image to version ${BUILD_NUMBER}"
 
                     git push https://${githubtoken}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
