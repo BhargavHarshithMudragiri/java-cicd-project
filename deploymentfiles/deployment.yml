@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mc-app
+  name: java-app
   labels:
-    app: mc-app
+    app: java-app
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: mc-app
+      app: java-app
   template:
     metadata:
       labels:
-        app: mc-app
+        app: java-app
     spec:
       containers:
-      - name: mc-app
+      - name: java-app
         image: bhargavharshith/javaproject:xyz
         ports:
         - containerPort: 8080
