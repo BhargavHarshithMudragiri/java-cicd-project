@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: java-app
-        image: bhargavharshith/javaproject:xyz
+        image: bhargavharshith/javaproject:5
         ports:
         - containerPort: 8080
 
